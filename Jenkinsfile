@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'webserver' }
 
     environment {
         DEPLOY_USER = "ubuntu"       // User on web server
