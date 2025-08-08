@@ -14,12 +14,6 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                sh 'composer install --no-dev'
-            }
-        }
-
         stage('Deploy') {
             steps {
                 sshagent (credentials: ['webserver-ssh-key']) {
@@ -35,7 +29,7 @@ pipeline {
             steps {
                 sshagent (credentials: ['webserver-ssh-key']) {
                     sh """
-                        ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "cd ${DEPLOY_PATH} && drush cr && drush updb -y"
+                        ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "cd ${DEPLOY_PATH} && composer install --no-dev && drush cr && drush updb -y"
                     """
                 }
             }
