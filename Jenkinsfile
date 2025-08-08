@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DEPLOY_USER = "ubuntu"       // User on web server
-        DEPLOY_SERVER = "43.205.131.100"   // Web server IP
+        DEPLOY_SERVER = "65.0.120.115"   // Web server IP
         DEPLOY_PATH = "/var/www/html/mysite"
     }
 
@@ -19,7 +19,7 @@ pipeline {
                 sshagent (credentials: ['webserver-ssh-key']) {
                     sh """
                         mkdir -p ~/.ssh
-                        ssh-keyscan -H 43.205.131.100 >> ~/.ssh/known_hosts
+                        ssh-keyscan -H 65.0.120.115 >> ~/.ssh/known_hosts
                         echo "Deployed on date" > version.txt
                         rsync -avz --delete ./mysite/ ubuntu@43.205.131.100:/var/www/html/mysite
                     """
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 sshagent (credentials: ['webserver-ssh-key']) {
                     sh """
-                        ssh ubuntu@43.205.131.100 "cd /var/www/html/mysite && composer install --no-dev && ./vendor/bin/drush cr && ./vendor/bin/drush updb -y"
+                        ssh ubuntu@65.0.120.115 "cd /var/www/html/mysite && composer install --no-dev && ./vendor/bin/drush cr && ./vendor/bin/drush updb -y"
                     """
                 }
             }
