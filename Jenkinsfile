@@ -19,7 +19,12 @@ pipeline {
         stage('Backup DB') {
             steps {
                 withCredentials([string(credentialsId: 'DB_PASS_ID', variable: 'DB_PASS_ID')]) {
-                    sh 'mysqldump -u ${DB_USER} -p"$DB_PASS_ID" --no-tablespaces ${DB_NAME} > backup.sql'
+                    sshagent (credentials: ['webserver-ssh-key']) {
+                        sh """
+                            ssh ubuntu@${DEPLOY_SERVER} \
+                                "mysqldump -u ${DB_USER} -p\\"$DB_PASS\\" --no-tablespaces ${DB_NAME} > /home/ubuntu/db_backups/db_backup_$(date +%F_%H-%M-%S).sql"
+                        """        
+                    }   
                 }
             }
         }
