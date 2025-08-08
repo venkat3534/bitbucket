@@ -23,7 +23,6 @@ pipeline {
                     sh """
                         mkdir -p ~/.ssh
                         ssh-keyscan -H ${DEPLOY_SERVER} >> ~/.ssh/known_hosts
-                        echo "Deployed on date" > version.txt
                         rsync -avz --exclude 'sites/default/files' ./mysite/ ubuntu@${DEPLOY_SERVER}:${DEPLOY_PATH}
                     """
                 }
