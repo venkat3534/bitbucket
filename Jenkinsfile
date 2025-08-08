@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://venkat3534@bitbucket.org/venkat3534/drupal-site.git'
+                git branch: 'master', url: 'https://github.com/venkat3534/bitbucket.git'
             }
         }
 
