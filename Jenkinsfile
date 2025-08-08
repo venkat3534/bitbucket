@@ -16,7 +16,13 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/venkat3534/bitbucket.git'
             }
         }
-
+        stage('Backup DB') {
+            steps {
+                withCredentials([string(credentialsId: 'DB_PASS_ID', variable: 'DB_PASS_ID')]) {
+                    sh 'mysqldump -u ${DB_USER} -p"$DB_PASS_ID" --no-tablespaces ${DB_NAME} > backup.sql'
+                }
+            }
+        }
         stage('Deploy') {
             steps {
                 sshagent (credentials: ['webserver-ssh-key']) {
@@ -30,16 +36,11 @@ pipeline {
         }
         stage('Post-Deploy') {
             steps {
-                withCredentials([string(credentialsId: 'DB_PASS_ID', variable: 'DB_PASS_ID')]) {
-                    sshagent (credentials: ['webserver-ssh-key']) {
-                        sh """
-                            ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "
-                                mkdir -p ${DB_BACKUP_DIR} &&
-                                mysqldump -u ${DB_USER} -p${DB_PASS_ID} ${DB_NAME} > ${DB_BACKUP_DIR}/db_backup_\$(date +%F_%H-%M-%S).sql &&
-                                cd ${DEPLOY_PATH} &&
-                                composer install --no-dev &&
-                                ./vendor/bin/drush cr &&
-                                ./vendor/bin/drush updb -y
+                sshagent (credentials: ['webserver-ssh-key']) {
+                    sh """
+                        ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "
+                            cd ${DEPLOY_PATH} &&
+                            composer install --no-dev && ./vendor/bin/drush cr && ./vendor/bin/drush updb -y
                             "
                         """
                     }
