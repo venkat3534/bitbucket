@@ -18,8 +18,9 @@ pipeline {
             steps {
                 sshagent (credentials: ['webserver-ssh-key']) {
                     sh """
-                        rsync -avz --delete \
-                        ./ ${DEPLOY_USER}@${DEPLOY_SERVER}:${DEPLOY_PATH}
+                        mkdir -p ~/.ssh
+                        ssh-keyscan -H 43.205.131.100 >> ~/.ssh/known_hosts
+                        rsync -avz --delete ./ ubuntu@43.205.131.100:/var/www/html/mysite
                     """
                 }
             }
