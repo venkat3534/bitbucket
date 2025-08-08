@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Post-Deploy') {
             steps {
-                withCredentials([string(credentialsId: 'db-password', variable: 'DB_PASS_ID')]) {
+                withCredentials([string(credentialsId: 'DB_PASS_ID', variable: 'DB_PASS_ID')]) {
                     sshagent (credentials: ['webserver-ssh-key']) {
                         sh """
                             ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "
