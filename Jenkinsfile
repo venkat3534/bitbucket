@@ -21,7 +21,7 @@ pipeline {
                         mkdir -p ~/.ssh
                         ssh-keyscan -H 65.0.120.115 >> ~/.ssh/known_hosts
                         echo "Deployed on date" > version.txt
-                        rsync -avz --delete ./mysite/ ubuntu@43.205.131.100:/var/www/html/mysite
+                        rsync -avz --delete ./mysite/ ubuntu@65.0.120.115:/var/www/html/mysite
                     """
                 }
             }
