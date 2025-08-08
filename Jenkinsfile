@@ -20,7 +20,7 @@ pipeline {
                     sh """
                         mkdir -p ~/.ssh
                         ssh-keyscan -H 43.205.131.100 >> ~/.ssh/known_hosts
-                        rsync -avz --delete ./ ubuntu@43.205.131.100:/var/www/html/mysite
+                        rsync -avz --delete ./mysite/ ubuntu@43.205.131.100:/var/www/html/mysite
                     """
                 }
             }
