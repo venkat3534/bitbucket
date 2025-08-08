@@ -16,18 +16,7 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/venkat3534/bitbucket.git'
             }
         }
-        stage('Backup DB') {
-            steps {
-                withCredentials([string(credentialsId: 'DB_PASS_ID', variable: 'DB_PASS_ID')]) {
-                    sshagent (credentials: ['webserver-ssh-key']) {
-                        sh """
-                            ssh ubuntu@${DEPLOY_SERVER} \
-                                'mysqldump -u drupaluser -p"${DB_PASS_ID}" --no-tablespaces drupaldb > /home/ubuntu/db_backups/db_backup_$(date +%F_%H-%M-%S).sql'
-                        """        
-                    }   
-                }
-            }
-        }
+        
         stage('Deploy') {
             steps {
                 sshagent (credentials: ['webserver-ssh-key']) {
