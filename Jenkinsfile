@@ -22,7 +22,7 @@ pipeline {
                     sshagent (credentials: ['webserver-ssh-key']) {
                         sh """
                             ssh ubuntu@${DEPLOY_SERVER} \
-                                "mysqldump -u ${DB_USER} -p'${DB_PASS_ID}' --no-tablespaces ${DB_NAME} > /home/ubuntu/db_backups/db_backup_$(date +%F_%H-%M-%S).sql"
+                                "mysqldump -u drupaluser -p'${DB_PASS_ID}' --no-tablespaces drupaldb > /home/ubuntu/db_backups/db_backup_$(date +%F_%H-%M-%S).sql"
                         """        
                     }   
                 }
