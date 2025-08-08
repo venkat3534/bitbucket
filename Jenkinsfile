@@ -38,12 +38,8 @@ pipeline {
             steps {
                 sshagent (credentials: ['webserver-ssh-key']) {
                     sh """
-                        ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "
-                            cd ${DEPLOY_PATH} &&
-                            composer install --no-dev && ./vendor/bin/drush cr && ./vendor/bin/drush updb -y
-                            "
-                        """
-                    }
+                        ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "cd ${DEPLOY_PATH} && composer install --no-dev && ./vendor/bin/drush cr && ./vendor/bin/drush updb -y"
+                    """
                 }
             }
         }
