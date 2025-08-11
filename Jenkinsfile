@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DEPLOY_USER = "ubuntu"       // Webserver user
-        DEPLOY_SERVER = "65.0.120.115"   // Webserver IP
+        DEPLOY_SERVER = "65.0.101.64"   // Webserver IP
         DEPLOY_PATH = "/var/www/html/mysite"  // Webserver Path
         DB_BACKUP_DIR = "/home/ubuntu/db_backups"
         DB_NAME       = "drupaldb"
