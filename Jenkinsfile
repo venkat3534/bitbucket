@@ -19,7 +19,7 @@ pipeline {
         
         stage('Deploy') {
             steps {
-                sshagent (credentials: ['webserver-ssh-key']) {
+                sshagent (credentials: ['ubuntu']) {
                     sh """
                         mkdir -p ~/.ssh
                         ssh-keyscan -H ${DEPLOY_SERVER} >> ~/.ssh/known_hosts
@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Post-Deploy') {
             steps {
-                sshagent (credentials: ['webserver-ssh-key']) {
+                sshagent (credentials: ['ubuntu']) {
                     sh """
                         ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "cd ${DEPLOY_PATH} && composer install --no-dev && ./vendor/bin/drush cr && ./vendor/bin/drush updb -y"
                     """
